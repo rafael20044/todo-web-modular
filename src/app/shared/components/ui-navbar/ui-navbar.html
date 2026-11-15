@@ -1,0 +1,82 @@
+<header
+  class="sticky top-0 z-40 w-full border-b border-slate-200/80 dark:border-slate-800 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md"
+>
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+    <!-- Brand -->
+    <div class="flex items-center gap-3">
+      <div
+        class="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm shadow-indigo-600/30"
+        aria-hidden="true"
+      >
+        <svg
+          class="size-5"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2.2"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          />
+        </svg>
+      </div>
+      <span class="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
+        {{ appName() }}
+      </span>
+    </div>
+
+    <!-- Center Slot (Search / Filters) -->
+    <div class="flex-1 max-w-md hidden sm:block">
+      <ng-content select="[slot=center]" />
+    </div>
+
+    <!-- Right Actions / User Profile -->
+    <div class="flex items-center gap-3">
+      <ng-content select="[slot=actions]" />
+
+      @if (userName() || userEmail()) {
+        <div class="flex items-center gap-3 pl-3 border-l border-slate-200 dark:border-slate-800">
+          <div class="hidden md:flex flex-col text-right leading-tight">
+            @if (userName()) {
+              <span class="text-sm font-semibold text-slate-800 dark:text-slate-100">
+                {{ userName() }}
+              </span>
+            }
+            @if (userEmail()) {
+              <span class="text-xs text-slate-500 dark:text-slate-400">
+                {{ userEmail() }}
+              </span>
+            }
+          </div>
+
+          <button
+            type="button"
+            (click)="logoutClicked.emit()"
+            aria-label="Cerrar sesión"
+            title="Cerrar sesión"
+            class="inline-flex items-center justify-center size-9 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:text-slate-400 dark:hover:text-rose-400 dark:hover:bg-rose-950/50 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+          >
+            <svg
+              class="size-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.75"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+              />
+            </svg>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>

@@ -1,0 +1,93 @@
+<div
+  role="alert"
+  class="flex items-start gap-3 rounded-xl p-4 text-sm ring-1 ring-inset"
+  [class.bg-indigo-50/80]="variant() === 'info'"
+  [class.text-indigo-900]="variant() === 'info'"
+  [class.ring-indigo-600/20]="variant() === 'info'"
+  [class.dark:bg-indigo-950/50]="variant() === 'info'"
+  [class.dark:text-indigo-200]="variant() === 'info'"
+  [class.dark:ring-indigo-500/30]="variant() === 'info'"
+  [class.bg-emerald-50/80]="variant() === 'success'"
+  [class.text-emerald-900]="variant() === 'success'"
+  [class.ring-emerald-600/20]="variant() === 'success'"
+  [class.dark:bg-emerald-950/50]="variant() === 'success'"
+  [class.dark:text-emerald-200]="variant() === 'success'"
+  [class.dark:ring-emerald-500/30]="variant() === 'success'"
+  [class.bg-amber-50/80]="variant() === 'warning'"
+  [class.text-amber-900]="variant() === 'warning'"
+  [class.ring-amber-600/20]="variant() === 'warning'"
+  [class.dark:bg-amber-950/50]="variant() === 'warning'"
+  [class.dark:text-amber-200]="variant() === 'warning'"
+  [class.dark:ring-amber-500/30]="variant() === 'warning'"
+  [class.bg-rose-50/80]="variant() === 'error'"
+  [class.text-rose-900]="variant() === 'error'"
+  [class.ring-rose-600/20]="variant() === 'error'"
+  [class.dark:bg-rose-950/50]="variant() === 'error'"
+  [class.dark:text-rose-200]="variant() === 'error'"
+  [class.dark:ring-rose-500/30]="variant() === 'error'"
+>
+  <span class="shrink-0 mt-0.5" aria-hidden="true">
+    @switch (variant()) {
+      @case ('success') {
+        <svg class="size-5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      }
+      @case ('warning') {
+        <svg class="size-5 text-amber-600 dark:text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      }
+      @case ('error') {
+        <svg class="size-5 text-rose-600 dark:text-rose-400" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      }
+      @default {
+        <svg class="size-5 text-indigo-600 dark:text-indigo-400" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      }
+    }
+  </span>
+
+  <div class="flex-1 space-y-1">
+    @if (title()) {
+      <h4 class="font-semibold leading-tight">{{ title() }}</h4>
+    }
+    <div class="text-xs sm:text-sm opacity-90 leading-relaxed">
+      <ng-content />
+    </div>
+  </div>
+
+  @if (dismissible()) {
+    <button
+      type="button"
+      (click)="dismissed.emit()"
+      aria-label="Cerrar notificación"
+      class="shrink-0 rounded-lg p-1 opacity-70 hover:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+    >
+      <svg class="size-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path
+          d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"
+        />
+      </svg>
+    </button>
+  }
+</div>

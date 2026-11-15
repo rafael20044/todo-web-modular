@@ -1,10 +1,11 @@
 <div class="space-y-8">
   <app-ui-card padding="lg">
     <!-- Contrato POST /api/auth/login -> LoginDto { email, password } -->
-    <form class="space-y-5" (submit)="onSubmit($event)" novalidate>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5" novalidate>
       <!-- Campo de Correo Electrónico (máx. 255 caracteres según MyConst.MAX_EMAIL_LENGTH) -->
       <app-ui-input
         id="login-email"
+        formControlName="email"
         type="email"
         label="Correo electrónico"
         placeholder="rafael@example.com"
@@ -33,6 +34,7 @@
       <!-- Campo de Contraseña (mín. 8 caracteres según MyConst.MIN_PASSWORD_LENGTH) -->
       <app-ui-input
         id="login-password"
+        formControlName="password"
         type="password"
         label="Contraseña"
         placeholder="••••••••"

@@ -1,16 +1,16 @@
 <label
   [for]="id()"
   class="group inline-flex items-start gap-3 select-none"
-  [class.cursor-pointer]="!disabled()"
-  [class.cursor-not-allowed]="disabled()"
-  [class.opacity-50]="disabled()"
+  [class.cursor-pointer]="!isDisabled()"
+  [class.cursor-not-allowed]="isDisabled()"
+  [class.opacity-50]="isDisabled()"
 >
   <span class="relative flex items-center justify-center mt-0.5">
     <input
       [id]="id()"
       type="checkbox"
       [checked]="checked()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       (change)="onToggle($event)"
       class="peer size-4.5 appearance-none rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 checked:bg-indigo-600 checked:border-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all duration-150 cursor-pointer disabled:cursor-not-allowed"
     />

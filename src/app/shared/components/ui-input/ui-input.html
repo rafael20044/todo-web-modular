@@ -32,6 +32,8 @@
       [autocomplete]="autocomplete()"
       [required]="required()"
       [disabled]="disabled()"
+      [attr.minlength]="minlength()"
+      [attr.maxlength]="maxlength()"
       [attr.aria-invalid]="!!error()"
       [attr.aria-describedby]="error() ? id() + '-error' : hint() ? id() + '-hint' : null"
       (input)="onInput($event)"
@@ -100,7 +102,11 @@
   </div>
 
   @if (error()) {
-    <p [id]="id() + '-error'" class="text-xs font-medium text-rose-600 dark:text-rose-400" role="alert">
+    <p
+      [id]="id() + '-error'"
+      class="text-xs font-medium text-rose-600 dark:text-rose-400"
+      role="alert"
+    >
       {{ error() }}
     </p>
   } @else if (hint()) {

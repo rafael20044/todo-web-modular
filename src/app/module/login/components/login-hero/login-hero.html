@@ -17,35 +17,51 @@
     <app-ui-brand-logo size="lg" theme="light" />
   </div>
 
-  <!-- Contenido central con vista previa de productividad -->
+  <!-- Contenido central con vista previa del dominio real (Categorías + Tareas + Subtareas) -->
   <div class="relative z-10 my-auto max-w-lg space-y-6">
-    <app-ui-badge variant="indigo" [dot]="true">Organización inteligente</app-ui-badge>
+    <app-ui-badge variant="indigo" [dot]="true">Categorías · Tareas · Subtareas</app-ui-badge>
 
     <h1 class="text-4xl font-bold tracking-tight leading-tight text-white">
-      Enfócate en lo que importa, cumple cada meta del día.
+      Organiza tus proyectos por categorías, prioridades y subtareas.
     </h1>
 
     <p class="text-base text-slate-300 leading-relaxed">
-      Centraliza tus pendientes, prioriza entregas y mantén el control de tu flujo de trabajo en
-      una interfaz rápida y libre de distracciones.
+      Clasifica tus pendientes con etiquetas de color personalizadas, controla el avance con
+      checklists de subtareas y filtra por estado en tiempo real.
     </p>
 
-    <!-- Mini tarjeta demostrativa de tareas -->
+    <!-- Tarjeta demostrativa alineada con TaskModel, CategoryModel y SubtaskModel -->
     <div
-      class="mt-8 rounded-2xl bg-slate-800/70 backdrop-blur-md p-5 ring-1 ring-white/10 space-y-3.5"
+      class="mt-8 rounded-2xl bg-slate-800/70 backdrop-blur-md p-5 ring-1 ring-white/10 space-y-4"
       aria-hidden="true"
     >
+      <!-- Cabecera con Categoría (#3B82F6) y Estado (IN_PROGRESS) -->
       <div
-        class="flex items-center justify-between text-xs text-slate-400 pb-2 border-b border-white/10"
+        class="flex items-center justify-between text-xs text-slate-400 pb-3 border-b border-white/10"
       >
-        <span class="font-medium text-slate-200">Tareas de hoy</span>
-        <span class="text-emerald-400 font-semibold">2 de 3 completadas</span>
+        <div class="inline-flex items-center gap-2">
+          <span class="size-2.5 rounded-full bg-[#3B82F6]"></span>
+          <span class="font-semibold text-slate-200">Trabajo</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <app-ui-badge variant="indigo" size="sm">IN_PROGRESS</app-ui-badge>
+          <app-ui-badge variant="amber" size="sm">HIGH</app-ui-badge>
+        </div>
       </div>
 
-      <div class="flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <span class="flex size-5 items-center justify-center rounded-md bg-indigo-600 text-white">
-            <svg class="size-3.5" viewBox="0 0 20 20" fill="currentColor">
+      <!-- Tarea Padre -->
+      <div>
+        <h3 class="text-sm font-semibold text-white">Preparar presentación trimestral</h3>
+        <p class="mt-0.5 text-xs text-slate-400">
+          Incluir métricas de rendimiento del Q4 · Vence 15 Nov, 18:00
+        </p>
+      </div>
+
+      <!-- Subtareas (SubtaskModel) -->
+      <div class="space-y-2 pt-1 pl-3 border-l-2 border-indigo-500/40">
+        <div class="flex items-center gap-2.5">
+          <span class="flex size-4 items-center justify-center rounded bg-emerald-600 text-white">
+            <svg class="size-3" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fill-rule="evenodd"
                 d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
@@ -53,42 +69,22 @@
               />
             </svg>
           </span>
-          <span class="text-sm text-slate-400 line-through">Definir arquitectura UI/UX</span>
-        </div>
-        <app-ui-badge variant="emerald" size="sm">Completada</app-ui-badge>
-      </div>
-
-      <div class="flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <span class="flex size-5 items-center justify-center rounded-md bg-indigo-600 text-white">
-            <svg class="size-3.5" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </span>
-          <span class="text-sm text-slate-400 line-through">
-            Crear kit de componentes en Angular
+          <span class="text-xs text-slate-400 line-through">
+            Exportar gráficos de ventas validados
           </span>
         </div>
-        <app-ui-badge variant="emerald" size="sm">Completada</app-ui-badge>
-      </div>
 
-      <div class="flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <span class="size-5 rounded-md border border-slate-500 bg-slate-900/50"></span>
-          <span class="text-sm font-medium text-white">Lanzar versión 1.0 a producción</span>
+        <div class="flex items-center gap-2.5">
+          <span class="size-4 rounded border border-slate-500 bg-slate-900/50"></span>
+          <span class="text-xs text-slate-200">Redactar conclusiones y proyecciones</span>
         </div>
-        <app-ui-badge variant="amber" size="sm">Alta prioridad</app-ui-badge>
       </div>
     </div>
   </div>
 
   <!-- Pie del panel izquierdo -->
   <div class="relative z-10 flex items-center justify-between text-xs text-slate-400">
-    <span>© 2026 TodoWeb. Todos los derechos reservados.</span>
-    <span>Productividad simple y efectiva</span>
+    <span>© 2026 TodoWeb</span>
+    <span>Sesión segura con JWT & HttpOnly Cookie</span>
   </div>
 </section>

@@ -1,45 +1,48 @@
-# AGENTS.md — Contexto y Arquitectura del Proyecto (`todo-web`)
+# AGENTS.md — Contexto, Arquitectura y Contrato API (`todo-web`)
 
 ## 1. Stack Tecnológico y Versiones
 - **Framework**: Angular `^22.2.0` (`@angular/core`, `@angular/common`, `@angular/forms`, `@angular/platform-browser`, `@angular/router`) con `@angular/cli` y `@angular/build` `^22.2.7`.
 - **Arquitectura Angular**: Componentes **Standalone** por defecto (sin sufijo `.component`), **Signals** (`signal()`) y modo **Zoneless**.
 - **Gestor de Paquetes**: `pnpm@12.21.0`.
-- **UI y Estilos**:
-  - **Tailwind CSS v4** (`tailwindcss` `^4.1.12`, `@tailwindcss/postcss` `^4.1.12`, `postcss` `^8.5.3`).
-  - Configurado mediante `.postcssrc.json` e importado globalmente con `@import 'tailwindcss';` en `src/styles.css`.
-- **Calidad y Testing**:
-  - **Prettier** `^3.8.1` (`printWidth: 100`, `singleQuote: true`, parser `angular` para `.html`).
-  - **Vitest** `^5.0.0` + `jsdom` `^30.0.0` (`@angular/build:unit-test`).
-  - **TypeScript** `~6.0.2` (modo estricto activado).
+- **UI y Estilos**: Tailwind CSS v4 (`^4.1.12`) vía `.postcssrc.json` y `@import 'tailwindcss';` en `src/styles.css`.
+- **Calidad y Testing**: Prettier `^3.8.1` (`printWidth: 100`, `singleQuote: true`), Vitest `^5.0.0` + `jsdom` `^30.0.0`, TypeScript `~6.0.2` estricto.
 
 ## 2. Arquitectura de Carpetas y Regla de Componentes
-- **Regla de Ubicación de Componentes**:
-  - **Componentes compartidos (`src/app/shared/components/`)**: Si un componente se utiliza en **más de una página** (ej. `ui-button`, `ui-input`, `ui-card`, `ui-checkbox`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-empty-state`, `ui-navbar`, `ui-brand-logo`), debe ubicarse en `src/app/shared/components/` y exportarse en `src/app/shared/components/index.ts`.
-  - **Componentes exclusivos de módulo/página (`src/app/module/<modulo>/components/`)**: Si un componente solo se necesita para **esa página en particular** (ej. `login-hero`, `login-header`, `login-form`), se ubica dentro de `src/app/module/<modulo>/components/`.
-  - **Páginas (`src/app/module/<modulo>/page/`)**: Las páginas se construyen ensamblando componentes de su módulo y componentes compartidos para facilitar el mantenimiento.
+- **Componentes compartidos (`src/app/shared/components/`)**: Si un componente se usa en **2 o más páginas** (`ui-alert`, `ui-badge`, `ui-brand-logo`, `ui-button`, `ui-card`, `ui-checkbox`, `ui-color-picker`, `ui-empty-state`, `ui-input`, `ui-modal`, `ui-navbar`, `ui-pagination`, `ui-select`, `ui-textarea`), va en `src/app/shared/components/` y se exporta en `src/app/shared/components/index.ts`.
+- **Componentes exclusivos de módulo/página (`src/app/module/<modulo>/components/`)**: Si un componente solo se necesita en **esa página** (ej. `login-hero`, `login-header`, `login-form`), va en `src/app/module/<modulo>/components/`.
+- **Páginas (`src/app/module/<modulo>/page/`)**: Ensamblan los componentes del módulo y los compartidos.
 
-```text
-todo-web/
-├── public/                              # Assets estáticos públicos
-└── src/
-    ├── index.html                       # Documento HTML base (<app-root>)
-    ├── main.ts                          # Bootstrap de la aplicación con App y appConfig
-    ├── styles.css                       # Estilos globales y directiva @import 'tailwindcss';
-    └── app/
-        ├── app.ts / app.html / app.css  # Componente raíz standalone
-        ├── app.config.ts                # Proveedores globales
-        ├── app.routes.ts                # Definición de rutas
-        ├── shared/
-        │   └── components/              # Componentes reutilizables en 2+ páginas (Design System)
-        └── module/
-            └── <modulo>/
-                ├── components/          # Componentes exclusivos de la página/módulo
-                └── page/                # Vista contenedora que ensambla los componentes
-```
+## 3. Contrato de la API Backend (`http://localhost:8080/api`)
+- **Autenticación y Seguridad**:
+  - `POST /api/auth/login` (Pública): Body `{ email, password }` -> Retorna `200 OK` `{ accessToken }` + Cookie `HttpOnly` `token` (Refresh Token 7 días).
+  - `POST /api/auth/refresh` (Pública, requiere cookie `token`) -> Rota cookie y retorna `{ accessToken }`.
+  - `POST /api/auth/logout` (Pública, requiere cookie `token`) -> `204 No Content`.
+  - `DELETE /api/auth/logout/{userId}` (`Bearer`) -> Cierra todas las sesiones del usuario (`204`).
+  - `GET /api/auth/tokens?userId=&isRevoked=&page=0&size=10` (`Bearer`) -> `Page<ResponseRefreshTokenDto>` (`{ id, userId, expiresAt, isRevoked, createdAt }`).
+- **Usuarios (`/api/users`)**:
+  - `POST /api/users` (Pública): `{ username, email, password, role?: 'ROLE_USER' | 'ROLE_ADMIN' }` -> `201` `{ id, username, email, role, createdAt, updatedAt }`.
+  - `GET /api/users`, `GET /api/users/{uuid}`, `PUT /api/users/{uuid}` (`{ username?, password?, role? }`), `DELETE /api/users/{uuid}` (`Bearer`).
+- **Categorías (`/api/categories`, `Bearer`)**:
+  - `POST /api/categories`: `{ userId, name, color?: '#3B82F6' }` -> `201` `{ id, userId, name, color, createdAt }`.
+  - `GET /api/categories?userId=&page=0&size=20`, `GET /api/categories/{id}`, `PUT /api/categories/{id}` (`{ name, color }`), `DELETE /api/categories/{id}`.
+- **Tareas (`/api/tasks`, `Bearer`)**:
+  - `POST /api/tasks`: `{ userId, categoryId?, title, description?, priority?: 'LOW'|'MEDIUM'|'HIGH'|'URGENT', dueDate? }` -> Inicia en `status: 'PENDING'`.
+  - `GET /api/tasks?userId=&categoryId=&status=&page=0&size=20` -> `Page<ResponseTaskDto>`.
+  - `PUT /api/tasks/{id}`: `{ categoryId?, title, description?, status: 'PENDING'|'IN_PROGRESS'|'COMPLETED'|'CANCELLED', priority, dueDate? }`.
+  - `DELETE /api/tasks/{id}` -> `204`.
+- **Subtareas (`/api/subtasks`, `Bearer`)**:
+  - `POST /api/subtasks`: `{ taskId, title, position?: 0 }` -> `201` `{ id, taskId, title, isCompleted, position, createdAt, updatedAt }`.
+  - `GET /api/subtasks?taskId=&page=0&size=20`, `PUT /api/subtasks/{id}` (`{ title, isCompleted, position }`), `DELETE /api/subtasks/{id}`.
+- **Constantes de Validación (`MyConst`) y Errores (`ErrorDto`)**:
+  - `email`: máx `255`, regex email. `username`: `2` a `100` chars. `password`: mín `8` chars.
+  - `category.name`: `2` a `50` chars (único por usuario). `category.color`: Hex `^#[A-Fa-f0-9]{6}$` (default `#3B82F6`).
+  - `task.title`: `2` a `150` chars. `task.description`: máx `2000` chars. `subtask.title`: `2` a `200` chars, `position >= 0`.
+  - Formato de error estándar: `{ code: string, message: string, status: number }`.
+  - Formato paginado: `{ content: T[], pageable: { pageNumber, pageSize }, totalElements, totalPages, first, last, empty }`.
 
-## 3. Reglas de Ahorro de Tokens y Contexto
-- **Evitar lecturas redundantes**: Con este resumen del stack, no leas `package.json`, `angular.json`, `tsconfig*.json`, `.prettierrc` ni `pnpm-lock.yaml` salvo solicitud explícita.
-- **Ignorar directorios generados**: Prohibido leer o buscar dentro de `node_modules/`, `.angular/`, `dist/` o `pnpm-lock.yaml`.
+## 4. Reglas de Ahorro de Tokens y Contexto
+- **Evitar lecturas redundantes**: No leer `package.json`, `angular.json`, `tsconfig*.json`, `.prettierrc` ni `pnpm-lock.yaml` salvo solicitud explícita.
+- **Ignorar directorios generados**: Prohibido leer o buscar en `node_modules/`, `.angular/`, `dist/` o `pnpm-lock.yaml`.
 - **Reglas modulares activas**:
   - `.agents/rules/ui-ux-designer.md` (`always_on`): Rol UI/UX, planificación obligatoria (**Qué**, **Cómo**, **Dónde**) con freno de aprobación y proactividad.
   - `.agents/rules/angular-logic-lock.md` (`glob: **/*.ts, **/*.html`): Bloqueo de edición de archivos `.ts` y protección de bindings en `.html`.

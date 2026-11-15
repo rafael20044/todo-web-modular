@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
-import { UiButton, UiCard, UiCheckbox, UiInput } from '../../../../shared/components';
+import { UiButton, UiCard, UiInput } from '../../../../shared/components';
 
 @Component({
-  imports: [UiCard, UiInput, UiCheckbox, UiButton],
+  imports: [UiCard, UiInput, UiButton],
   selector: 'app-login-form',
   templateUrl: './login-form.html',
   styleUrl: './login-form.css',

@@ -1,0 +1,16 @@
+<div class="flex flex-col items-center text-center sm:items-start sm:text-left">
+  <!-- Logo visible en móvil/tablet -->
+  <div class="mb-6 lg:hidden">
+    <app-ui-brand-logo size="md" theme="auto" />
+  </div>
+
+  <h2
+    id="login-heading"
+    class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white"
+  >
+    {{ title() }}
+  </h2>
+  <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+    {{ subtitle() }}
+  </p>
+</div>

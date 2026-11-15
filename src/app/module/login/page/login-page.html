@@ -1,1 +1,15 @@
-<p>login-page works!</p>
+<main class="min-h-dvh grid grid-cols-1 lg:grid-cols-2 bg-slate-50 dark:bg-slate-950">
+  <!-- Panel Izquierdo: Marca y Vista Previa (Visible en Desktop) -->
+  <app-login-hero class="hidden lg:block" />
+
+  <!-- Panel Derecho: Encabezado y Formulario de Inicio de Sesión -->
+  <section
+    aria-labelledby="login-heading"
+    class="flex flex-col items-center justify-center p-6 sm:p-10 lg:p-12"
+  >
+    <div class="w-full max-w-md space-y-8">
+      <app-login-header />
+      <app-login-form />
+    </div>
+  </section>
+</main>

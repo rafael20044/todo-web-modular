@@ -12,21 +12,29 @@
   - **Vitest** `^5.0.0` + `jsdom` `^30.0.0` (`@angular/build:unit-test`).
   - **TypeScript** `~6.0.2` (modo estricto activado).
 
-## 2. Arquitectura de Carpetas (`src/` y `public/`)
+## 2. Arquitectura de Carpetas y Regla de Componentes
+- **Regla de Ubicación de Componentes**:
+  - **Componentes compartidos (`src/app/shared/components/`)**: Si un componente se utiliza en **más de una página** (ej. `ui-button`, `ui-input`, `ui-card`, `ui-checkbox`, `ui-badge`, `ui-alert`, `ui-modal`, `ui-empty-state`, `ui-navbar`, `ui-brand-logo`), debe ubicarse en `src/app/shared/components/` y exportarse en `src/app/shared/components/index.ts`.
+  - **Componentes exclusivos de módulo/página (`src/app/module/<modulo>/components/`)**: Si un componente solo se necesita para **esa página en particular** (ej. `login-hero`, `login-header`, `login-form`), se ubica dentro de `src/app/module/<modulo>/components/`.
+  - **Páginas (`src/app/module/<modulo>/page/`)**: Las páginas se construyen ensamblando componentes de su módulo y componentes compartidos para facilitar el mantenimiento.
+
 ```text
 todo-web/
-├── public/                  # Assets estáticos públicos (favicon, imágenes, etc.)
+├── public/                              # Assets estáticos públicos
 └── src/
-    ├── index.html           # Documento HTML base (<app-root>)
-    ├── main.ts              # Bootstrap de la aplicación con App y appConfig
-    ├── styles.css           # Estilos globales y directiva @import 'tailwindcss';
+    ├── index.html                       # Documento HTML base (<app-root>)
+    ├── main.ts                          # Bootstrap de la aplicación con App y appConfig
+    ├── styles.css                       # Estilos globales y directiva @import 'tailwindcss';
     └── app/
-        ├── app.ts           # Componente raíz standalone (selector: 'app-root')
-        ├── app.html         # Plantilla HTML principal del componente raíz
-        ├── app.css          # Hoja de estilos encapsulada del componente raíz
-        ├── app.config.ts    # Proveedores globales (Router, GlobalErrorListeners)
-        ├── app.routes.ts    # Definición de rutas de la aplicación
-        └── app.spec.ts      # Pruebas unitarias del componente raíz
+        ├── app.ts / app.html / app.css  # Componente raíz standalone
+        ├── app.config.ts                # Proveedores globales
+        ├── app.routes.ts                # Definición de rutas
+        ├── shared/
+        │   └── components/              # Componentes reutilizables en 2+ páginas (Design System)
+        └── module/
+            └── <modulo>/
+                ├── components/          # Componentes exclusivos de la página/módulo
+                └── page/                # Vista contenedora que ensambla los componentes
 ```
 
 ## 3. Reglas de Ahorro de Tokens y Contexto

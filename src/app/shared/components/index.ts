@@ -1,5 +1,6 @@
 export * from './ui-alert/ui-alert';
 export * from './ui-badge/ui-badge';
+export * from './ui-brand-logo/ui-brand-logo';
 export * from './ui-button/ui-button';
 export * from './ui-card/ui-card';
 export * from './ui-checkbox/ui-checkbox';

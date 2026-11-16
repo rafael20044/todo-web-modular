@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { UiButton, UiCard, UiInput } from '../../../../shared/components';
 import { IUserLogin } from '../../../../shared/model/user/IUserLogin';
 
 @Component({
-  imports: [ReactiveFormsModule, UiCard, UiInput, UiButton],
+  imports: [ReactiveFormsModule, RouterLink, UiCard, UiInput, UiButton],
   selector: 'app-login-form',
   templateUrl: './login-form.html',
   styleUrl: './login-form.css',
@@ -26,7 +27,6 @@ export class LoginForm {
     const userLogin = {
       email: this.form.value.email || '',
       password: this.form.value.password || '',
-    } satisfies IUserLogin; 
-
+    } satisfies IUserLogin;
   }
 }

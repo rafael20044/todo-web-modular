@@ -1,0 +1,129 @@
+<div class="space-y-8">
+  <app-ui-card padding="lg">
+    <!-- Contrato POST /api/users -> CreateUserDto { username, email, password, role? } -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5" novalidate>
+      <!-- Campo de Nombre de Usuario (2 a 100 caracteres según MyConst.MIN_NAME_LENGTH / MAX_NAME_LENGTH) -->
+      <app-ui-input
+        id="register-username"
+        formControlName="username"
+        type="text"
+        label="Nombre completo"
+        placeholder="Rafael Perez"
+        autocomplete="name"
+        [required]="true"
+        [minlength]="2"
+        [maxlength]="100"
+        [hasLeadingIcon]="true"
+      >
+        <svg
+          slot="icon"
+          class="size-5"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.75"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+          />
+        </svg>
+      </app-ui-input>
+
+      <!-- Campo de Correo Electrónico (máx. 255 caracteres según MyConst.MAX_EMAIL_LENGTH) -->
+      <app-ui-input
+        id="register-email"
+        formControlName="email"
+        type="email"
+        label="Correo electrónico"
+        placeholder="rafael@example.com"
+        autocomplete="email"
+        [required]="true"
+        [maxlength]="255"
+        [hasLeadingIcon]="true"
+      >
+        <svg
+          slot="icon"
+          class="size-5"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.75"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+          />
+        </svg>
+      </app-ui-input>
+
+      <!-- Campo de Contraseña (mín. 8 caracteres según MyConst.MIN_PASSWORD_LENGTH) -->
+      <app-ui-input
+        id="register-password"
+        formControlName="password"
+        type="password"
+        label="Contraseña"
+        placeholder="••••••••"
+        autocomplete="new-password"
+        hint="Mínimo 8 caracteres"
+        [required]="true"
+        [minlength]="8"
+        [hasLeadingIcon]="true"
+      >
+        <svg
+          slot="icon"
+          class="size-5"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.75"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+          />
+        </svg>
+      </app-ui-input>
+
+      <!-- Botón de Envío -->
+      <div class="pt-2">
+        <app-ui-button type="submit" variant="primary" size="lg" [fullWidth]="true">
+          Crear cuenta
+          <svg
+            slot="icon-right"
+            class="size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+            />
+          </svg>
+        </app-ui-button>
+      </div>
+    </form>
+  </app-ui-card>
+
+  <!-- Enlace de retorno a Login -->
+  <p class="text-center text-sm text-slate-600 dark:text-slate-400">
+    ¿Ya tienes una cuenta?
+    <a
+      routerLink="/login"
+      class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded"
+    >
+      Inicia sesión
+    </a>
+  </p>
+</div>

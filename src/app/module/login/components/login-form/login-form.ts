@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UiButton, UiCard, UiInput } from '../../../../shared/components';
-
-export interface LoginCredentials {
-  readonly email: string;
-  readonly password: string;
-}
+import { IUserLogin } from '../../../../shared/model/user/IUserLogin';
 
 @Component({
   imports: [ReactiveFormsModule, UiCard, UiInput, UiButton],
@@ -17,8 +13,6 @@ export interface LoginCredentials {
 export class LoginForm {
   private readonly fb = inject(NonNullableFormBuilder);
 
-  readonly submitted = output<LoginCredentials>();
-
   protected readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
     password: ['', [Validators.required, Validators.minLength(8)]],
@@ -29,7 +23,10 @@ export class LoginForm {
       this.form.markAllAsTouched();
       return;
     }
-    console.log(this.form.getRawValue());
-    this.submitted.emit(this.form.getRawValue());
+    const userLogin = {
+      email: this.form.value.email || '',
+      password: this.form.value.password || '',
+    } satisfies IUserLogin; 
+
   }
 }

@@ -2,15 +2,19 @@
 
 ## 1. Stack Tecnológico y Versiones
 - **Framework**: Angular `^22.2.0` (`@angular/core`, `@angular/common`, `@angular/forms`, `@angular/platform-browser`, `@angular/router`) con `@angular/cli` y `@angular/build` `^22.2.7`.
-- **Arquitectura Angular**: Componentes **Standalone** por defecto (sin sufijo `.component`), **Signals** (`signal()`) y modo **Zoneless**.
+- **Arquitectura Angular**: Componentes **Standalone** por defecto (sin sufijo `.component`), **Signals** (`signal()`), `inject()` y modo **Zoneless**.
 - **Gestor de Paquetes**: `pnpm@12.21.0`.
 - **UI y Estilos**: Tailwind CSS v4 (`^4.1.12`) vía `.postcssrc.json` y `@import 'tailwindcss';` en `src/styles.css`.
 - **Calidad y Testing**: Prettier `^3.8.1` (`printWidth: 100`, `singleQuote: true`), Vitest `^5.0.0` + `jsdom` `^30.0.0`, TypeScript `~6.0.2` estricto.
 
-## 2. Arquitectura de Carpetas y Regla de Componentes
+## 2. Arquitectura de Carpetas, Componentes y Servicios
 - **Componentes compartidos (`src/app/shared/components/`)**: Si un componente se usa en **2 o más páginas** (`ui-alert`, `ui-badge`, `ui-brand-logo`, `ui-button`, `ui-card`, `ui-checkbox`, `ui-color-picker`, `ui-empty-state`, `ui-input`, `ui-modal`, `ui-navbar`, `ui-pagination`, `ui-select`, `ui-textarea`), va en `src/app/shared/components/` y se exporta en `src/app/shared/components/index.ts`.
 - **Componentes exclusivos de módulo/página (`src/app/module/<modulo>/components/`)**: Si un componente solo se necesita en **esa página** (ej. `login-hero`, `login-header`, `login-form`), va en `src/app/module/<modulo>/components/`.
 - **Páginas (`src/app/module/<modulo>/page/`)**: Ensamblan los componentes del módulo y los compartidos.
+- **Modelos/Interfaces (`src/app/shared/model/`)**: Agrupados por dominio (ej. `src/app/shared/model/user/IUserLogin.ts`).
+- **Servicios (`src/app/shared/services/`)**:
+  - Todos los servicios se ubican en `src/app/shared/services/`, **cada servicio en su propia carpeta** y usando la sintaxis de Angular 22 (`inject()`, `signal()`, sin sufijo `.service.ts` clásico si usa nomenclatura Angular 22 como `auth-service.ts`).
+  - **Regla de Esqueleto (Sin Lógica)**: Al crear un servicio por solicitud del usuario, solo se definen sus variables/inyecciones y las firmas de sus métodos retornando siempre `return null;`. El usuario implementa la lógica.
 
 ## 3. Contrato de la API Backend (`http://localhost:8080/api`)
 - **Autenticación y Seguridad**:
@@ -45,4 +49,4 @@
 - **Ignorar directorios generados**: Prohibido leer o buscar en `node_modules/`, `.angular/`, `dist/` o `pnpm-lock.yaml`.
 - **Reglas modulares activas**:
   - `.agents/rules/ui-ux-designer.md` (`always_on`): Rol UI/UX, planificación obligatoria (**Qué**, **Cómo**, **Dónde**) con freno de aprobación y proactividad.
-  - `.agents/rules/angular-logic-lock.md` (`glob: **/*.ts, **/*.html`): Bloqueo de edición de archivos `.ts` y protección de bindings en `.html`.
+  - `.agents/rules/angular-logic-lock.md` (`glob: **/*.ts, **/*.html`): Bloqueo de edición de archivos `.ts`, esqueleto de servicios en `src/app/shared/services/` y protección de bindings en `.html`.
